@@ -52,7 +52,9 @@ install() {
                 if [ ${PYTHON_ARCHITECTURE} = "arm64" ]; then
                     [ -x "$(brew --prefix openblas)" ] || brew install openblas > /dev/null
                     export OPENBLAS=$(brew --prefix openblas)
-                    pep517=--no-use-pep517
+                    venv
+                    ${python} -m pip install --quiet --upgrade cmake cython
+                    deactivate
                 fi
             fi
             ;;
@@ -82,7 +84,7 @@ install() {
     ${python} -m pip install --quiet --upgrade numpy ${pep517}
     export ONNX_ML=1
     export ONNX_NAMESPACE=onnx
-    ${python} -m pip install --quiet "./third_party/source/onnx"
+    ${python} -m pip install --quiet "./third_party/source/onnx" ${pep517}
     deactivate
 }
 
